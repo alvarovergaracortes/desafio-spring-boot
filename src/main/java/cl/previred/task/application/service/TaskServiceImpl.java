@@ -41,17 +41,16 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	public Task create(Task task) {
 		
-	    UserEntity userEntity = userService.findEntityById(task.getUserId());
-	    
-	    TaskStates taskStates = taskStatesService.findById(task.getTaskStatesId());
-	    TaskStatesEntity taskStatesEntity = taskStatesMapper.toEntity(taskStates);
-	    
-	    TaskEntity taskEntity = taskMapper.toEntity(userEntity, taskStatesEntity, task);
-	    TaskEntity saved = taskJpaRepository.save(taskEntity);
-	    
-	    Task domain = taskMapper.toDomain(saved);
-	    
-	    
+		UserEntity userEntity = userService.findEntityById(task.getUserId());
+		
+		TaskStates taskStates = taskStatesService.findById(task.getTaskStatesId());
+		TaskStatesEntity taskStatesEntity = taskStatesMapper.toEntity(taskStates);
+		TaskEntity taskEntity = taskMapper.toEntity(userEntity, taskStatesEntity, task);
+		
+		TaskEntity saved = taskJpaRepository.save(taskEntity);
+		
+		Task domain = taskMapper.toDomain(saved);
+		
 		return domain;
 	}
 
@@ -73,8 +72,8 @@ public class TaskServiceImpl implements TaskService {
 		existingEntity.setCreationDate(task.getCreationDate() != null ? task.getCreationDate() : existingEntity.getCreationDate());
 		existingEntity.setUserEntity(userEntity);
 		existingEntity.setTaskStates(taskStatesEntity);
-
-	    TaskEntity updated = taskJpaRepository.save(existingEntity);
+		
+		TaskEntity updated = taskJpaRepository.save(existingEntity);
 		
 		return taskMapper.toDomain(updated);
 	}
@@ -83,9 +82,9 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional
 	public void deleteTask(Long id) {
 		TaskEntity taskEntity = taskJpaRepository.findById(id)
-		        .orElseThrow(() -> new ResourceNotFoundException("Tarea con ID " + id + " no encontrada"));
-
-		    taskJpaRepository.delete(taskEntity);
+				.orElseThrow(() -> new ResourceNotFoundException("Tarea con ID " + id + " no encontrada"));
+		
+		taskJpaRepository.delete(taskEntity);
 	}
 
 	@Override
@@ -98,14 +97,14 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public Task findById(Long id) {
 		return taskJpaRepository.findById(id)
-		        .map(taskMapper::toDomain)
-		        .orElseThrow(() -> new ResourceNotFoundException("Tarea con ID " + id + " no encontrada"));
+				.map(taskMapper::toDomain)
+				.orElseThrow(() -> new ResourceNotFoundException("Tarea con ID " + id + " no encontrada"));
 	}
 
 	@Override
 	public List<Task> findByUserEntityId(Long id) {
 		List<TaskEntity> entities = taskJpaRepository.findByUserEntityId(id);
-	    return entities.stream().map(taskMapper::toDomain).collect(Collectors.toList());
+		return entities.stream().map(taskMapper::toDomain).collect(Collectors.toList());
 	}
 
 }

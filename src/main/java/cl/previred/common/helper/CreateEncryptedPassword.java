@@ -13,8 +13,8 @@ public class CreateEncryptedPassword {
 
 	public static void main(String[] args) {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		System.out.println("clavedepepito: " + encoder.encode("clavedepepito"));
 		System.out.println("admin123: " + encoder.encode("admin123"));
 		System.out.println("user123: " + encoder.encode("user123"));
 	}
-
 }

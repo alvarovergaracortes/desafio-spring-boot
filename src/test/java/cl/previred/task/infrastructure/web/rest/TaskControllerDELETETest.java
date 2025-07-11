@@ -43,26 +43,26 @@ public class TaskControllerDELETETest {
     				newUser.setRoles("ADMIN");
     				return userJpaRepository.save(newUser);
     			});
-
-        userId = user.getId();
-        jwtToken = jwtUtil.generateToken(user.getUsername(), List.of(user.getRoles()));
-
-        TaskStatesEntity state = taskStatesJpaRepository.findById(1)
-            .orElseGet(() -> {
-                TaskStatesEntity s = new TaskStatesEntity();
-                s.setId(1);
-                s.setName("ACTIVA");
-                return taskStatesJpaRepository.save(s);
-            });
-
-        TaskEntity task = new TaskEntity();
-        task.setTitle("Tarea para eliminar");
-        task.setDescription("Descripción");
-        task.setUserEntity(user);
-        task.setTaskStates(state);
-        task = taskJpaRepository.save(task);
-
-        taskId = task.getId();
+    	
+    	userId = user.getId();
+    	jwtToken = jwtUtil.generateToken(user.getUsername(), List.of(user.getRoles()));
+    	
+    	TaskStatesEntity state = taskStatesJpaRepository.findById(1)
+    			.orElseGet(() -> {
+    				TaskStatesEntity s = new TaskStatesEntity();
+    				s.setId(1);
+    				s.setName("ACTIVA");
+    				return taskStatesJpaRepository.save(s);
+    			});
+    	
+    	TaskEntity task = new TaskEntity();
+    	task.setTitle("Tarea para eliminar");
+    	task.setDescription("Descripción");
+    	task.setUserEntity(user);
+    	task.setTaskStates(state);
+    	task = taskJpaRepository.save(task);
+    	
+    	taskId = task.getId();
     }
 
     /**
@@ -73,9 +73,9 @@ public class TaskControllerDELETETest {
      */
     @Test
     void deleteTaskSuccessfully() throws Exception {
-        mockMvc.perform(delete("/tasks/{id}", taskId)
-                .header("Authorization", "Bearer " + jwtToken))
-            .andExpect(status().isNoContent());
+    	mockMvc.perform(delete("/tasks/{id}", taskId)
+    			.header("Authorization", "Bearer " + jwtToken))
+    		.andExpect(status().isNoContent());
     }
 
     /**
@@ -85,9 +85,9 @@ public class TaskControllerDELETETest {
      */
     @Test
     void returnNotFoundWhenDeletingNonExistingTask() throws Exception {
-        mockMvc.perform(delete("/tasks/{id}", 9999)
-                .header("Authorization", "Bearer " + jwtToken))
-            .andExpect(status().isNotFound());
+    	mockMvc.perform(delete("/tasks/{id}", 9999)
+    			.header("Authorization", "Bearer " + jwtToken))
+    		.andExpect(status().isNotFound());
     }
     
 
@@ -99,7 +99,7 @@ public class TaskControllerDELETETest {
      */
     @Test
     void returnUnauthorizedWhenNoTokenProvided() throws Exception {
-        mockMvc.perform(delete("/tasks/{id}", taskId))
-            .andExpect(status().isUnauthorized());
+    	mockMvc.perform(delete("/tasks/{id}", taskId))
+    		.andExpect(status().isUnauthorized());
     }
 }

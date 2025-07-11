@@ -5,13 +5,13 @@
 -- admin ; pwd=admin123     
 -- user  ; pwd=user123      
 INSERT INTO users (username, password, roles) VALUES
-('pepito', '$2b$12$OkkQv/7GIiDgPjT299FuwOzQSKVU6sSTIo5eETXg3s7bZrviMAcsy', 'Admin');
+('pepito', '$2a$10$V1Oa9S0S5SUjVvGjKUCyaurCDgHf4AHtukJWQCpsqQYvQ.gnUIsl.', 'Admin');
 
 INSERT INTO users (username, password, roles) VALUES
-('admin', '$2a$10$N2g5wYOvFNsY8LRO6axtb.wsOZHmgUhkgVn40fPGZLbZ4yN907O0m', 'ADMIN');
+('admin', '$2a$10$zFC/8N.FuD/Q3mXEwcOyIOQf6lopvdAoq.eyBHEII8RW8H66g1B3W', 'ADMIN');
 
 INSERT INTO users (username, password, roles) VALUES
-('user', '$2a$10$go1YU7TF8MVSpbjSycbgQebluJtEebfm22FeabbvZ.uUTAhxtCMSS', 'USER');
+('user', '$2a$10$s2u5T1tbMsgnUZZKmpl5.e4ztz0HWncrVns3eK/e3QvA4yhKL0JE.', 'USER');
 
 
 -- Estados de tarea

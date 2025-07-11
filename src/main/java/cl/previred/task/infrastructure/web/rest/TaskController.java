@@ -59,11 +59,12 @@ public class TaskController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskResponse> create(@RequestBody @Valid TaskRequest taskRequest) {
-    	Task taskCreated = taskMapper.toDomain(taskRequest);
-    	
-    	Task task = taskService.create(taskCreated);
-    	TaskResponse response = taskMapper.toResponse(task);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		Task taskCreated = taskMapper.toDomain(taskRequest);
+		
+		Task task = taskService.create(taskCreated);
+		TaskResponse response = taskMapper.toResponse(task);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
@@ -76,9 +77,9 @@ public class TaskController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskResponse> update(@PathVariable Long id, @Valid @RequestBody TaskRequest taskRequest) {
-        Task task = taskMapper.toDomain(taskRequest);
-        Task taskUpdate = taskService.updateTask(id, task);
-        return ResponseEntity.ok(taskMapper.toResponse(taskUpdate));
+    	Task task = taskMapper.toDomain(taskRequest);
+    	Task taskUpdate = taskService.updateTask(id, task);
+    	return ResponseEntity.ok(taskMapper.toResponse(taskUpdate));
     }
     
     @Operation(summary = "Elimina un Task", description = "")

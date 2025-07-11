@@ -9,15 +9,15 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String username;
-    
-    private String password;
-    
-    private String roles;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String username;
+	
+	private String password;
+	
+	private String roles;
 
 	public Long getId() {
 		return id;
@@ -51,5 +51,4 @@ public class UserEntity {
 		this.roles = roles;
 	}
     
-
 }

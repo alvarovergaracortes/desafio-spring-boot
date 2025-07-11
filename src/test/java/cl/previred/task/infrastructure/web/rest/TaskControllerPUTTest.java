@@ -150,26 +150,26 @@ public class TaskControllerPUTTest {
 	@Test
 	void returnForbiddenIfUserRoleIsNotAdmin() throws Exception {
 	    // Crear usuario con rol USER
-	    UserEntity user = new UserEntity();
-	    user.setUsername("usertest");
-	    user.setPassword("123456");
-	    user.setRoles("USER");
-	    user = userJpaRepository.save(user);
-
-	    String userJwt = jwtUtil.generateToken(user.getUsername(), List.of("USER"));
-
-	    TaskRequest updateRequest = new TaskRequest(
-	        taskId,
-	        "Título modificado",
-	        "Descripción modificada",
-	        1,
-	        user.getId()
-	    );
-
-	    mockMvc.perform(put("/tasks/" + taskId)
-	            .header("Authorization", "Bearer " + userJwt)
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .content(objectMapper.writeValueAsString(updateRequest)))
-	        .andExpect(status().isForbidden());
+		UserEntity user = new UserEntity();
+		user.setUsername("usertest");
+		user.setPassword("123456");
+		user.setRoles("USER");
+		user = userJpaRepository.save(user);
+		
+		String userJwt = jwtUtil.generateToken(user.getUsername(), List.of("USER"));
+		
+		TaskRequest updateRequest = new TaskRequest(
+				taskId,
+				"Título modificado",
+				"Descripción modificada",
+				1,
+				user.getId()
+		);
+		
+		mockMvc.perform(put("/tasks/" + taskId)
+				.header("Authorization", "Bearer " + userJwt)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequest)))
+		.andExpect(status().isForbidden());
 	}
 }

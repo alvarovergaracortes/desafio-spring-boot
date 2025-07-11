@@ -16,24 +16,24 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="task")
 public class TaskEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String title;
-    
-    private String description;
-    
-    @Column(name="creation_date")
-    private LocalDateTime creationDate;
-    
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userEntity;
-
-    @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false)
-    private TaskStatesEntity taskStates;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String title;
+	
+	private String description;
+	
+	@Column(name="creation_date")
+	private LocalDateTime creationDate;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private UserEntity userEntity;
+	
+	@ManyToOne
+	@JoinColumn(name = "state_id", nullable = false)
+	private TaskStatesEntity taskStates;
 
 	public Long getId() {
 		return id;

@@ -45,23 +45,22 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		List<String> roles = Arrays.stream(userEntity.getRoles().split(","))
-                .map(String::trim)
-                .map(String::toLowerCase)
-                .toList();
+				.map(String::trim)
+				.map(String::toLowerCase)
+				.toList();
 		
 		if (!roles.contains(user.getRoles().toLowerCase())) {
-            throw new CredencialesInvalidasException("Rol no autorizado", ErrorCode.UNAUTHORIZED_ROLE);
-        }
-
-
-        return Optional.of(jwtUtil.generateToken(userEntity.getUsername(), roles));
+			throw new CredencialesInvalidasException("Rol no autorizado", ErrorCode.UNAUTHORIZED_ROLE);
+		}
+		
+		return Optional.of(jwtUtil.generateToken(userEntity.getUsername(), roles));
 	}
 
 
 	@Override
 	public User findById(Long userId) {
 		UserEntity entity = userJpaRepository.findById(userId).orElseThrow(
-		        () -> new ResourceNotFoundException("Usuario con ID: " + userId + " no encontrado"));
+				() -> new ResourceNotFoundException("Usuario con ID: " + userId + " no encontrado"));
 		
 		User user = userMapper.toDomain(entity);
 		return user;
@@ -81,7 +80,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserEntity findEntityById(Long userId) {
 		return userJpaRepository.findById(userId).orElseThrow(
-		        () -> new ResourceNotFoundException("Usuario con ID: " + userId + " no encontrado"));
+				() -> new ResourceNotFoundException("Usuario con ID: " + userId + " no encontrado"));
 	}
 	
 	

@@ -6,7 +6,6 @@ public class TaskStates {
     private String name;
 
 	public TaskStates(Integer id, String name) {
-		super();
 		this.id = id;
 		this.name = name;
 	}

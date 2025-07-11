@@ -19,8 +19,7 @@ public class ErrorMessage{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
     
-    public ErrorMessage(String message, int status, String path) {
-        this.message = message;
+    public ErrorMessage(String message, int status, String path) {this.message = message;
         this.status = status;
         this.path = path;
         this.timestamp = LocalDateTime.now();

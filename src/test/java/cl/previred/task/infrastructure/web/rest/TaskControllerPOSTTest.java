@@ -48,29 +48,29 @@ public class TaskControllerPOSTTest {
     @BeforeEach
     void setUp() {
     	// Verifica si el usuario ya existe
-        UserEntity user = userJpaRepository.findByUsername("testuser")
-                .orElseGet(() -> {
-                    UserEntity newUser = new UserEntity();
-                    newUser.setUsername("testuser");
-                    newUser.setPassword("123456");
-                    newUser.setRoles("ADMIN");
-                    return userJpaRepository.save(newUser);
-                });
-
-        // Verifica si el estado ya existe
-        taskStatesJpaRepository.findById(1).orElseGet(() -> {
-            TaskStatesEntity state = new TaskStatesEntity();
-            state.setId(1);
-            state.setName("Pendiente");
-            return taskStatesJpaRepository.save(state);
-        });
-
-        userId = user.getId();
-        taskStateId = 1;
-
-        jwtToken = jwtUtil.generateToken(user.getUsername(), List.of(user.getRoles()));
+    	UserEntity user = userJpaRepository.findByUsername("testuser")
+    			.orElseGet(() -> {
+    				UserEntity newUser = new UserEntity();
+    				newUser.setUsername("testuser");
+    				newUser.setPassword("123456");
+    				newUser.setRoles("ADMIN");
+    				return userJpaRepository.save(newUser);
+    			});
+    	
+    	// Verifica si el estado ya existe
+    	taskStatesJpaRepository.findById(1).orElseGet(() -> {
+    		TaskStatesEntity state = new TaskStatesEntity();
+    		state.setId(1);
+    		state.setName("Pendiente");
+    		return taskStatesJpaRepository.save(state);
+    	});
+    	
+    	userId = user.getId();
+    	taskStateId = 1;
+    	
+    	jwtToken = jwtUtil.generateToken(user.getUsername(), List.of(user.getRoles()));
     }
-
+    
     /**
      * Prueba que verifica si una tarea se crea correctamente (http 201
      * 
@@ -79,20 +79,20 @@ public class TaskControllerPOSTTest {
     @Test
     void createTaskSuccessfull() throws Exception {
     	TaskRequest request = new TaskRequest(
-                null,
-                "Tarea de integracion",
-                "Descripción de la tarea",
-                1,
-                userJpaRepository.findByUsername("testuser").get().getId()
-            );
+    			null,
+    			"Tarea de integracion",
+    			"Descripción de la tarea",
+    			1,
+    			userJpaRepository.findByUsername("testuser").get().getId()
+    		);
     	
     	mockMvc.perform(post("/tasks")
     			.header("Authorization", "Bearer " + jwtToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.title").value("Tarea de integracion"))
-        .andExpect(jsonPath("$.description").value("Descripción de la tarea"));
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content(objectMapper.writeValueAsString(request)))
+    	.andExpect(status().isCreated())
+    	.andExpect(jsonPath("$.title").value("Tarea de integracion"))
+    	.andExpect(jsonPath("$.description").value("Descripción de la tarea"));
     }
     
     
@@ -103,15 +103,15 @@ public class TaskControllerPOSTTest {
      */
     @Test
     void failWhenTitleIsBlank() throws Exception {
-        TaskRequest request = new TaskRequest(
-            null, "", "Desc", taskStateId, userId
-        );
-
-        mockMvc.perform(post("/tasks")
-        		.header("Authorization", "Bearer " + jwtToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isBadRequest());
+    	TaskRequest request = new TaskRequest(
+    			null, "", "Desc", taskStateId, userId
+    	);
+    	
+    	mockMvc.perform(post("/tasks")
+    			.header("Authorization", "Bearer " + jwtToken)
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content(objectMapper.writeValueAsString(request)))
+    	.andExpect(status().isBadRequest());
     }
     
     
@@ -122,12 +122,12 @@ public class TaskControllerPOSTTest {
      */
     @Test
     void returnUnauthorizedWhenNoTokenProvided() throws Exception {
-        TaskRequest request = new TaskRequest(null, "Tarea", "desc", taskStateId, userId);
-
-        mockMvc.perform(post("/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isUnauthorized());
+    	TaskRequest request = new TaskRequest(null, "Tarea", "desc", taskStateId, userId);
+    	
+    	mockMvc.perform(post("/tasks")
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content(objectMapper.writeValueAsString(request)))
+    	.andExpect(status().isUnauthorized());
     }
     
     /**
@@ -137,13 +137,13 @@ public class TaskControllerPOSTTest {
      */
     @Test
     void failWhenUserNotFound() throws Exception {
-        TaskRequest request = new TaskRequest(null, "Tarea", "desc", taskStateId, 9999L);
-
-        mockMvc.perform(post("/tasks")
-                .header("Authorization", "Bearer " + jwtToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isNotFound());
+    	TaskRequest request = new TaskRequest(null, "Tarea", "desc", taskStateId, 9999L);
+    	
+    	mockMvc.perform(post("/tasks")
+    			.header("Authorization", "Bearer " + jwtToken)
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content(objectMapper.writeValueAsString(request)))
+    	.andExpect(status().isNotFound());
     }
     
     /**
@@ -153,21 +153,20 @@ public class TaskControllerPOSTTest {
      */
     @Test
     void failWhenUserRoleIsNotAdmin() throws Exception {
-        // Crear usuario con rol USER
-        UserEntity user = new UserEntity();
-        user.setUsername("usertest");
-        user.setPassword("123456");
-        user.setRoles("USER");
-        user = userJpaRepository.save(user);
-
-        String userJwt = jwtUtil.generateToken(user.getUsername(), List.of("USER"));
-
-        TaskRequest request = new TaskRequest(null, "Tarea", "desc", taskStateId, user.getId());
-
-        mockMvc.perform(post("/tasks")
-                .header("Authorization", "Bearer " + userJwt)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isForbidden());
+    	// Crear usuario con rol USER
+    	UserEntity user = new UserEntity();
+    	user.setUsername("usertest");
+    	user.setPassword("123456");
+    	user.setRoles("USER");
+    	user = userJpaRepository.save(user);
+    	String userJwt = jwtUtil.generateToken(user.getUsername(), List.of("USER"));
+    	
+    	TaskRequest request = new TaskRequest(null, "Tarea", "desc", taskStateId, user.getId());
+    	
+    	mockMvc.perform(post("/tasks")
+    			.header("Authorization", "Bearer " + userJwt)
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content(objectMapper.writeValueAsString(request)))
+    	.andExpect(status().isForbidden());
     }
 }
